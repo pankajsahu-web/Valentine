@@ -31,6 +31,165 @@
             position: relative;
         }
 
+        /* Gift Box Styles */
+        .gift-box-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--peach) 0%, var(--rose) 50%, var(--pink) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .gift-box-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .gift-box-scene {
+            text-align: center;
+            animation: fadeInScale 1s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .gift-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 3em;
+            color: var(--wine);
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(200, 90, 142, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .gift-subtitle {
+            font-size: 1.5em;
+            color: var(--wine);
+            margin-bottom: 50px;
+            font-weight: 600;
+            animation: bounce 2s infinite;
+        }
+
+        .gift-box {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .gift-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--accent), var(--pink));
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(255, 23, 68, 0.5);
+        }
+
+        .gift-lid {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--wine), var(--accent));
+            border-radius: 15px 15px 5px 5px;
+            box-shadow: 0 5px 20px rgba(200, 90, 142, 0.5);
+            transition: all 1s ease;
+            transform-origin: bottom;
+        }
+
+        .gift-box.opening .gift-lid {
+            transform: translateX(-50%) translateY(-100px) rotateX(-110deg);
+        }
+
+        .gift-bow {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3em;
+            animation: bowFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes bowFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .gift-ribbon-v {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--cream), var(--rose));
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .gift-ribbon-h {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(90deg, var(--cream), var(--rose));
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .sparkles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            pointer-events: none;
+        }
+
+        .sparkle-particle {
+            position: absolute;
+            font-size: 2em;
+            animation: sparkleFloat 2s ease-out forwards;
+        }
+
+        @keyframes sparkleFloat {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(1);
+            }
+        }
+
         /* Floating hearts animation */
         .heart-bg {
             position: fixed;
@@ -476,7 +635,26 @@
 <body>
     <div class="heart-bg" id="heartBg"></div>
 
-    <div class="container">
+    <!-- Gift Box Surprise -->
+    <div class="gift-box-container" id="giftBoxContainer">
+        <div class="gift-box-scene">
+            <h2 class="gift-title">🎁 I have a surprise for you! 🎁</h2>
+            <p class="gift-subtitle">Click the gift box to open! 💝</p>
+            
+            <div class="gift-box" id="giftBox" onclick="openGift()">
+                <div class="gift-lid">
+                    <div class="gift-bow">🎀</div>
+                </div>
+                <div class="gift-base"></div>
+                <div class="gift-ribbon-v"></div>
+                <div class="gift-ribbon-h"></div>
+            </div>
+            
+            <div class="sparkles" id="sparkles"></div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContent" style="display: none;">
         <header>
             <h1>💕 Happy Valentine's Day 💕</h1>
             <p class="tagline">My Baby ❤️ My Love 💕 Meri Jaan 💖 Mera Bachaaaa 🥰</p>
@@ -661,10 +839,10 @@
                         <div class="photo-quiz">
                             <p class="question-text">This is the time when we met? 🤔</p>
                             <div class="quiz-options">
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '1st')">5th time 💖</button>
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '2nd')">Pata Nahi 🌹</button>
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '3rd')">6rd time 💝</button>
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '4th')">10th time ✨</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '1st')">1st time 💖</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '2nd')">2nd time 🌹</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '3rd')">3rd time 💝</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '4th')">4th time ✨</button>
                             </div>
                             <div class="quiz-result" id="photoResult1"></div>
                         </div>
@@ -811,6 +989,47 @@
     </div>
 
     <script>
+        // Gift Box Opening Function
+        function openGift() {
+            const giftBox = document.getElementById('giftBox');
+            const giftContainer = document.getElementById('giftBoxContainer');
+            const mainContent = document.getElementById('mainContent');
+            const sparklesContainer = document.getElementById('sparkles');
+            
+            // Add opening animation
+            giftBox.classList.add('opening');
+            
+            // Create sparkles explosion
+            const sparkleEmojis = ['✨', '⭐', '💖', '💕', '💝', '🌟', '💗', '❤️'];
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle-particle';
+                sparkle.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                
+                const angle = (Math.PI * 2 * i) / 30;
+                const distance = 150;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                sparkle.style.setProperty('--tx', tx + 'px');
+                sparkle.style.setProperty('--ty', ty + 'px');
+                sparkle.style.left = '50%';
+                sparkle.style.top = '50%';
+                
+                sparklesContainer.appendChild(sparkle);
+            }
+            
+            // Show main content after animation
+            setTimeout(() => {
+                giftContainer.classList.add('hidden');
+                mainContent.style.display = 'block';
+                mainContent.style.animation = 'fadeInUp 1s ease-out';
+                
+                // Start floating hearts
+                createFloatingHearts();
+            }, 2000);
+        }
+
         // Create floating hearts
         function createFloatingHearts() {
             const heartBg = document.getElementById('heartBg');
@@ -1080,8 +1299,7 @@
         `;
         document.head.appendChild(style);
 
-        // Initialize floating hearts
-        createFloatingHearts();
+        // Hearts will start when gift box opens
     </script>
 </body>
 </html>
