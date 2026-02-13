@@ -96,10 +96,12 @@
         }
 
         .tagline {
-            font-size: 1.4em;
+            font-size: 1.6em;
             color: var(--wine);
-            font-weight: 600;
-            margin-top: 10px;
+            font-weight: 700;
+            margin-top: 15px;
+            line-height: 1.5;
+            text-shadow: 2px 2px 4px rgba(200, 90, 142, 0.2);
         }
 
         @keyframes fadeInDown {
@@ -161,27 +163,58 @@
             border-left: 5px solid var(--pink);
         }
 
-        /* Photo Gallery Styles */
-        .photo-memory {
-            margin: 40px 0;
-            animation: photoFadeIn 1s ease-out;
+        /* Photo Gallery Styles - Horizontal Scroll */
+        .photo-scroll-container {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            gap: 30px;
+            padding: 20px 10px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--pink) var(--cream);
         }
 
-        @keyframes photoFadeIn {
+        .photo-scroll-container::-webkit-scrollbar {
+            height: 12px;
+        }
+
+        .photo-scroll-container::-webkit-scrollbar-track {
+            background: var(--cream);
+            border-radius: 10px;
+        }
+
+        .photo-scroll-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, var(--pink), var(--wine));
+            border-radius: 10px;
+        }
+
+        .photo-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: var(--wine);
+        }
+
+        .photo-memory {
+            min-width: 400px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            animation: photoSlideIn 0.8s ease-out;
+        }
+
+        @keyframes photoSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateX(50px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
         }
 
         .photo-frame {
             position: relative;
-            max-width: 600px;
-            margin: 0 auto 20px;
+            width: 100%;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(255, 107, 157, 0.4);
@@ -189,16 +222,23 @@
         }
 
         .photo-frame:hover {
-            transform: scale(1.02);
+            transform: scale(1.02) rotate(1deg);
             box-shadow: 0 15px 50px rgba(255, 107, 157, 0.6);
         }
 
         .memory-photo {
             width: 100%;
-            height: auto;
+            height: 450px;
+            object-fit: cover;
+            object-position: center;
             display: block;
             border-radius: 20px;
             animation: photoZoom 0.8s ease-out;
+        }
+
+        /* Special cropping for photo 6 (mall image) */
+        .photo-memory:nth-child(6) .memory-photo {
+            object-position: center 30%;
         }
 
         @keyframes photoZoom {
@@ -269,6 +309,16 @@
             font-size: 1.1em;
             color: var(--wine);
             line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .photo-memory {
+                min-width: 320px;
+            }
+            
+            .memory-photo {
+                height: 380px;
+            }
         }
 
         /* Quiz Section */
@@ -460,8 +510,8 @@
 
     <div class="container">
         <header>
-            <h1>💕 Happy Valentine's Day! 💕</h1>
-            <p class="tagline">To the most amazing person in the world ✨</p>
+            <h1>💕 Happy Valentine's Day 💕</h1>
+            <p class="tagline">My Baby ❤️ My Love 💕 Meri Jaan 💖 Mera Bachaaaa 🥰</p>
         </header>
 
         <main>
@@ -629,117 +679,129 @@
                 <h2>📸 Our Beautiful Memories 📸</h2>
                 <div class="emoji-line">💑 💕 💑</div>
 
-                <!-- Photo 1 -->
-                <div class="photo-memory">
-                    <div class="photo-frame">
-                        <img src="1.jpeg" alt="Our Memory 1" class="memory-photo">
-                        <div class="photo-hearts">
-                            <span class="photo-heart">💕</span>
-                            <span class="photo-heart">💕</span>
-                            <span class="photo-heart">💕</span>
+                <div class="photo-scroll-container">
+                    <!-- Photo 1 -->
+                    <div class="photo-memory">
+                        <div class="photo-frame">
+                            <img src="1.jpeg" alt="Our Memory 1" class="memory-photo">
+                            <div class="photo-hearts">
+                                <span class="photo-heart">💕</span>
+                                <span class="photo-heart">💕</span>
+                                <span class="photo-heart">💕</span>
+                            </div>
+                        </div>
+                        <div class="photo-quiz">
+                            <p class="question-text">This is the time when we met? 🤔</p>
+                            <div class="quiz-options">
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '1st')">1st time 💖</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '2nd')">2nd time 🌹</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '3rd')">3rd time 💝</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '4th')">4th time ✨</button>
+                            </div>
+                            <div class="quiz-result" id="photoResult1"></div>
                         </div>
                     </div>
-                    <div class="photo-quiz">
-                        <p class="question-text">When did we meet? 🤔</p>
-                        <div class="quiz-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 600px; margin: 0 auto;">
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(1, '1st')">1st time 💖</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(1, '2nd')">2nd time 🌹</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(1, '3rd')">3rd time 💝</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(1, '4th')">4th time ✨</button>
-                        </div>
-                        <div class="quiz-result" id="photoResult1"></div>
-                    </div>
-                </div>
 
-                <!-- Photo 2 -->
-                <div class="photo-memory">
-                    <div class="photo-frame">
-                        <img src="2.jpeg" alt="Our Memory 2" class="memory-photo">
-                        <div class="photo-hearts">
-                            <span class="photo-heart">💗</span>
-                            <span class="photo-heart">💗</span>
-                            <span class="photo-heart">💗</span>
+                    <!-- Photo 2 -->
+                    <div class="photo-memory">
+                        <div class="photo-frame">
+                            <img src="2.jpeg" alt="Our Memory 2" class="memory-photo">
+                            <div class="photo-hearts">
+                                <span class="photo-heart">💗</span>
+                                <span class="photo-heart">💗</span>
+                                <span class="photo-heart">💗</span>
+                            </div>
+                        </div>
+                        <div class="photo-quiz">
+                            <p class="question-text">Did we kissed at that time? 💋</p>
+                            <div class="quiz-options">
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(2, 'yes')">Yes 😊</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(2, 'no')">No 😕</button>
+                            </div>
+                            <div class="quiz-result" id="photoResult2"></div>
                         </div>
                     </div>
-                    <div class="photo-caption">
-                        <p class="caption-text">📅 December 22, 2022</p>
-                        <p class="caption-desc">That beautiful day by the water! Remember how perfect everything was? 🌊💕</p>
-                    </div>
-                </div>
 
-                <!-- Photo 3 -->
-                <div class="photo-memory">
-                    <div class="photo-frame">
-                        <img src="3.jpeg" alt="Our Memory 3" class="memory-photo">
-                        <div class="photo-hearts">
-                            <span class="photo-heart">❤️</span>
-                            <span class="photo-heart">❤️</span>
-                            <span class="photo-heart">❤️</span>
+                    <!-- Photo 3 -->
+                    <div class="photo-memory">
+                        <div class="photo-frame">
+                            <img src="3.jpeg" alt="Our Memory 3" class="memory-photo">
+                            <div class="photo-hearts">
+                                <span class="photo-heart">❤️</span>
+                                <span class="photo-heart">❤️</span>
+                                <span class="photo-heart">❤️</span>
+                            </div>
+                        </div>
+                        <div class="photo-quiz">
+                            <p class="question-text">In which place we met? 📍</p>
+                            <div style="text-align: center; margin: 20px 0;">
+                                <input type="text" id="placeAnswer" placeholder="Type the place name..." 
+                                       style="width: 90%; max-width: 400px; padding: 15px; font-size: 1.1em; 
+                                              border: 3px solid var(--pink); border-radius: 15px; 
+                                              font-family: 'Quicksand', sans-serif; font-weight: 600;
+                                              background: var(--cream); text-align: center;">
+                                <button class="quiz-btn" onclick="checkPlaceAnswer()" style="display: block; margin: 20px auto;">
+                                    Submit Answer 💕
+                                </button>
+                            </div>
+                            <div class="quiz-result" id="photoResult3"></div>
                         </div>
                     </div>
-                    <div class="photo-quiz">
-                        <p class="question-text">What were we celebrating? 🎉</p>
-                        <div class="quiz-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 600px; margin: 0 auto;">
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(3, 'party')">A party 🎊</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(3, 'special')">Special day 🎈</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(3, 'festival')">Festival 🪔</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(3, 'us')">Just us! 💕</button>
-                        </div>
-                        <div class="quiz-result" id="photoResult3"></div>
-                    </div>
-                </div>
 
-                <!-- Photo 4 -->
-                <div class="photo-memory">
-                    <div class="photo-frame">
-                        <img src="4.jpeg" alt="Our Memory 4" class="memory-photo">
-                        <div class="photo-hearts">
-                            <span class="photo-heart">💖</span>
-                            <span class="photo-heart">💖</span>
-                            <span class="photo-heart">💖</span>
+                    <!-- Photo 4 -->
+                    <div class="photo-memory">
+                        <div class="photo-frame">
+                            <img src="4.jpeg" alt="Our Memory 4" class="memory-photo">
+                            <div class="photo-hearts">
+                                <span class="photo-heart">💖</span>
+                                <span class="photo-heart">💖</span>
+                                <span class="photo-heart">💖</span>
+                            </div>
+                        </div>
+                        <div class="photo-quiz">
+                            <p class="question-text">Did we fight at that time? 😤</p>
+                            <div class="quiz-options">
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(4, 'yesssss')">Yesssss 😭</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(4, 'yes')">Yes 😢</button>
+                            </div>
+                            <div class="quiz-result" id="photoResult4"></div>
                         </div>
                     </div>
-                    <div class="photo-caption">
-                        <p class="caption-text">🎊 Festival Vibes!</p>
-                        <p class="caption-desc">Celebrating together surrounded by colors and joy! Every moment with you is a celebration! 🎉💕</p>
-                    </div>
-                </div>
 
-                <!-- Photo 5 -->
-                <div class="photo-memory">
-                    <div class="photo-frame">
-                        <img src="5.jpeg" alt="Our Memory 5" class="memory-photo">
-                        <div class="photo-hearts">
-                            <span class="photo-heart">💝</span>
-                            <span class="photo-heart">💝</span>
-                            <span class="photo-heart">💝</span>
+                    <!-- Photo 5 -->
+                    <div class="photo-memory">
+                        <div class="photo-frame">
+                            <img src="5.jpeg" alt="Our Memory 5" class="memory-photo">
+                            <div class="photo-hearts">
+                                <span class="photo-heart">💝</span>
+                                <span class="photo-heart">💝</span>
+                                <span class="photo-heart">💝</span>
+                            </div>
+                        </div>
+                        <div class="photo-quiz">
+                            <p class="question-text">How was the day? 😊</p>
+                            <div class="quiz-options">
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(5, 'mast')">Bahut mast 🌟</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(5, 'jyada')">Bahut bahut bahut jyada mast 🎉</button>
+                            </div>
+                            <div class="quiz-result" id="photoResult5"></div>
                         </div>
                     </div>
-                    <div class="photo-quiz">
-                        <p class="question-text">How do you feel in this photo? 😊</p>
-                        <div class="quiz-options" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 600px; margin: 0 auto;">
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(5, 'happy')">So happy! 😊</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(5, 'loved')">So loved! 💕</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(5, 'beautiful')">Beautiful! ✨</button>
-                            <button class="quiz-btn" onclick="answerPhotoQuiz(5, 'blessed')">Blessed! 🙏</button>
-                        </div>
-                        <div class="quiz-result" id="photoResult5"></div>
-                    </div>
-                </div>
 
-                <!-- Photo 6 -->
-                <div class="photo-memory">
-                    <div class="photo-frame">
-                        <img src="6.jpeg" alt="Our Memory 6" class="memory-photo">
-                        <div class="photo-hearts">
-                            <span class="photo-heart">💘</span>
-                            <span class="photo-heart">💘</span>
-                            <span class="photo-heart">💘</span>
+                    <!-- Photo 6 -->
+                    <div class="photo-memory">
+                        <div class="photo-frame">
+                            <img src="6.jpeg" alt="Our Memory 6" class="memory-photo">
+                            <div class="photo-hearts">
+                                <span class="photo-heart">💘</span>
+                                <span class="photo-heart">💘</span>
+                                <span class="photo-heart">💘</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="photo-caption">
-                        <p class="caption-text">🛍️ Mall Adventure!</p>
-                        <p class="caption-desc">Shopping, laughing, and making memories together! You make even the simplest moments magical! 🌟💖</p>
+                        <div class="photo-caption">
+                            <p class="caption-text">🛍️ Mall Adventure!</p>
+                            <p class="caption-desc">Shopping, laughing, and making memories together! You make even the simplest moments magical! 🌟💖</p>
+                        </div>
                     </div>
                 </div>
 
@@ -968,17 +1030,17 @@
                     '3rd': "Close! But it was actually our first meeting! Remember? 😊",
                     '4th': "Not this time, but I remember all our meetings! This was our first! 💝"
                 },
-                3: {
-                    'party': "Yes! What a fun celebration that was! 🎊💕",
-                    'special': "Every day with you is special! And this one was extra special! ✨",
-                    'festival': "You got it! Festival vibes with my favorite person! 🪔💖",
-                    'us': "Always us! That's the best celebration! 💕💕"
+                2: {
+                    'yes': "Hehe yes! That sweet moment I'll never forget! 😊💋",
+                    'no': "Aww, maybe next time! But that moment was still special! 😕💕"
+                },
+                4: {
+                    'yesssss': "Yesssss we did! 😭 But we always make up because our love is stronger! 💪💕",
+                    'yes': "Yes we did 😢 But every fight makes us understand each other better! 💝"
                 },
                 5: {
-                    'happy': "And you make me the happiest person in the world! 😊💕",
-                    'loved': "Because you ARE so loved! Forever and always! 💖✨",
-                    'beautiful': "You're always beautiful to me! Inside and out! 🌟💝",
-                    'blessed': "I'm the one who's blessed to have you! 🙏💕"
+                    'mast': "Haan bahut mast tha! 🌟 Every day with you is mast! 💕",
+                    'jyada': "YESSS! Bahut bahut bahut jyada mast! 🎉💖 Best day ever! ✨"
                 }
             };
             
@@ -987,6 +1049,24 @@
                 result.classList.add('show');
                 createConfetti();
             }
+        }
+
+        // Check place answer
+        function checkPlaceAnswer() {
+            const placeInput = document.getElementById('placeAnswer');
+            const result = document.getElementById('photoResult3');
+            const answer = placeInput.value.trim().toLowerCase();
+            
+            if (answer === '') {
+                result.textContent = "Please type the place name! 💕";
+                result.classList.add('show');
+                return;
+            }
+            
+            // Accept any answer with a sweet response
+            result.textContent = `"${placeInput.value}"! Yes! That's the place where we made beautiful memories! 📍💕✨`;
+            result.classList.add('show');
+            createConfetti();
         }
 
         // Love meter functionality
