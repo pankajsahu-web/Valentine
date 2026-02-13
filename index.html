@@ -163,41 +163,14 @@
             border-left: 5px solid var(--pink);
         }
 
-        /* Photo Gallery Styles - Horizontal Scroll */
+        /* Photo Gallery Styles - Vertical Stack */
         .photo-scroll-container {
-            display: flex;
-            overflow-x: auto;
-            overflow-y: hidden;
-            gap: 30px;
-            padding: 20px 10px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: var(--pink) var(--cream);
-        }
-
-        .photo-scroll-container::-webkit-scrollbar {
-            height: 12px;
-        }
-
-        .photo-scroll-container::-webkit-scrollbar-track {
-            background: var(--cream);
-            border-radius: 10px;
-        }
-
-        .photo-scroll-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, var(--pink), var(--wine));
-            border-radius: 10px;
-        }
-
-        .photo-scroll-container::-webkit-scrollbar-thumb:hover {
-            background: var(--wine);
+            display: block;
         }
 
         .photo-memory {
-            min-width: 400px;
-            flex-shrink: 0;
-            scroll-snap-align: center;
+            margin: 40px auto;
+            max-width: 600px;
             animation: photoSlideIn 0.8s ease-out;
         }
 
@@ -234,11 +207,6 @@
             display: block;
             border-radius: 20px;
             animation: photoZoom 0.8s ease-out;
-        }
-
-        /* Special cropping for photo 6 (mall image) */
-        .photo-memory:nth-child(6) .memory-photo {
-            object-position: center 30%;
         }
 
         @keyframes photoZoom {
@@ -693,10 +661,10 @@
                         <div class="photo-quiz">
                             <p class="question-text">This is the time when we met? 🤔</p>
                             <div class="quiz-options">
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '1st')">1st time 💖</button>
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '2nd')">2nd time 🌹</button>
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '3rd')">3rd time 💝</button>
-                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '4th')">4th time ✨</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '1st')">5th time 💖</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '2nd')">Pata Nahi 🌹</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '3rd')">6rd time 💝</button>
+                                <button class="quiz-btn" onclick="answerPhotoQuiz(1, '4th')">10th time ✨</button>
                             </div>
                             <div class="quiz-result" id="photoResult1"></div>
                         </div>
@@ -788,7 +756,7 @@
                         </div>
                     </div>
 
-                    
+                </div>
 
                 <div class="message-box" style="margin-top: 40px;">
                     <p><strong>"Every photo tells a story, and every story is with you!" 💕</strong></p>
@@ -1117,4 +1085,3 @@
     </script>
 </body>
 </html>
-
